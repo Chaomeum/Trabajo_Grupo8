@@ -1,5 +1,6 @@
 import cv2
-from funciones import howis, ecualizacion_formula, mostrar_imagen_histograma
+# importamos las funciones necesarias para el analisis desde funciones.py
+from funciones import howis, ecualizacion_formula, mostrar_imagen_histograma, expansion_histograma
 
 # Leer la imagen 
 img = cv2.imread("pout.png")
@@ -14,14 +15,17 @@ else:  # Imagen en escala de grises (2 dimensiones)
 howis(img)
 howis(img_gris)
 
+# Aplicar expansion del histograma a la imagen en escala de grises
+img_expandida = expansion_histograma(img_gris)
+
 # Aplicar ecualización con fórmula a la imagen en escala de grises
 img_ecualizada = ecualizacion_formula(img_gris)
 
 # Mostrar imagen original en escala de grises y su ecualización
-cv2.imshow('Imagen real e Imagen ecualizada', cv2.hconcat([img_gris, img_ecualizada]))
+cv2.imshow('Imagen real, Imagen ecualizada e Imagen expandida', cv2.hconcat([img_gris, img_ecualizada, img_expandida]))
 
 # Mostrar histogramas
-mostrar_imagen_histograma(img_gris, img_ecualizada)
+mostrar_imagen_histograma(img_gris, img_ecualizada, img_expandida)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()

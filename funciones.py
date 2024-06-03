@@ -47,22 +47,41 @@ def ecualizacion_formula(img):
     # Retorna la imagen ecualizada
     return img_ecualizada
 
-def mostrar_imagen_histograma(img_original, img_ecualizada):
+def expansion_histograma(img):
+    # Calcula el mínimo y máximo valor de intensidad en la imagen
+    min_val = np.min(img)
+    max_val = np.max(img)
+    # Realiza la expansión lineal del histograma
+    img_expandida = (img - min_val) * (255 / (max_val - min_val))
+
+    # Asegúrate de que los valores estén en el rango [0, 255]
+    img_expandida = np.clip(img_expandida, 0, 255).astype(np.uint8)
+
+    return img_expandida
+
+def mostrar_imagen_histograma(img_original, img_ecualizada, img_expandida):
     # Obtiene las dimensiones de la imagen original
     width, height = img_original.shape
     # Genera una secuencia de valores de intensidad de píxeles de 0 a 255
     x = np.linspace(0, 255, num=256, dtype=np.uint8)
     
-    # Calcula los histogramas de la imagen original y la imagen ecualizada
+    # Calcula los histogramas de la imagen original, la imagen ecualizada y
+    # la imagen expandida
     y_original = calcular_histograma(img_original)
     y_ecualizada = calcular_histograma(img_ecualizada)
-    
-    # Crea una figura con dos subtramas (una para cada histograma)
-    plt.figure(figsize=(10, 6))
+    y_expandida = calcular_histograma(img_expandida)
 
-    # Subtrama para el histograma  de la imagen original
-    plt.subplot(1, 2, 1), plt.bar(x, y_original)
+    # Crea una figura con tres subtramas (una para cada histograma)
+    plt.figure(figsize=(15, 6))
+
+    # Subtrama para el histograma  de la imagen original    
+    plt.subplot(1, 3, 1), plt.bar(x, y_original)
+    plt.title('Histograma Original')
     # Subtrama para el histograma de la imagen ecualizada
-    plt.subplot(1, 2, 2), plt.bar(x, y_ecualizada)
+    plt.subplot(1, 3, 2), plt.bar(x, y_ecualizada)
+    plt.title('Histograma Ecualizado')
+    # Subtrama para el histograma de la imagen expandida
+    plt.subplot(1, 3, 3), plt.bar(x, y_expandida)
+    plt.title('Histograma Expandido')
     # Realiza comparativa entre los dos histogramas
     plt.show()
