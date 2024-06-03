@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
 
 def howis(img):
     print('size = ', img.shape)
@@ -59,9 +60,14 @@ def expansion_histograma(img):
 
     return img_expandida
 
-def mostrar_imagen_histograma(img_original, img_ecualizada, img_expandida):
-    # Obtiene las dimensiones de la imagen original
-    width, height = img_original.shape
+def redimensionar_imagen(img, altura):
+    (h, w) = img.shape[:2]
+    relacion_aspecto = altura / float(h)
+    nuevo_ancho = int(w * relacion_aspecto)
+    imagen_redimensionada = cv2.resize(img, (nuevo_ancho, altura))
+    return imagen_redimensionada
+
+def mostrar_imagen_histograma(img_original, img_ecualizada, img_expandida):        
     # Genera una secuencia de valores de intensidad de píxeles de 0 a 255
     x = np.linspace(0, 255, num=256, dtype=np.uint8)
     
@@ -72,7 +78,7 @@ def mostrar_imagen_histograma(img_original, img_ecualizada, img_expandida):
     y_expandida = calcular_histograma(img_expandida)
 
     # Crea una figura con tres subtramas (una para cada histograma)
-    plt.figure(figsize=(15, 6))
+    plt.figure(figsize=(25, 5))
 
     # Subtrama para el histograma  de la imagen original    
     plt.subplot(1, 3, 1), plt.bar(x, y_original)
@@ -83,5 +89,5 @@ def mostrar_imagen_histograma(img_original, img_ecualizada, img_expandida):
     # Subtrama para el histograma de la imagen expandida
     plt.subplot(1, 3, 3), plt.bar(x, y_expandida)
     plt.title('Histograma Expandido')
-    # Realiza comparativa entre los dos histogramas
+    # Realiza comparativa entre los tres histogramas
     plt.show()
