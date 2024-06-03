@@ -2,11 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 
-def howis(img):
-    print('size = ', img.shape)
-    print('max  = ', np.max(img))
-    print('min  = ', np.min(img))
-
 def calcular_histograma(img):
     # Obtenemos las dimensiones de la imagen
     width, height = img.shape
@@ -59,13 +54,6 @@ def expansion_histograma(img):
     img_expandida = np.clip(img_expandida, 0, 255).astype(np.uint8)
 
     return img_expandida
-
-def redimensionar_imagen(img, altura):
-    (h, w) = img.shape[:2]
-    relacion_aspecto = altura / float(h)
-    nuevo_ancho = int(w * relacion_aspecto)
-    imagen_redimensionada = cv2.resize(img, (nuevo_ancho, altura))
-    return imagen_redimensionada
 
 def mostrar_imagen_histograma(img_original, img_ecualizada, img_expandida):        
     # Genera una secuencia de valores de intensidad de píxeles de 0 a 255
